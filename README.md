@@ -5,7 +5,6 @@
 
 ## <a name='TOC'>Table of Contents</a>
 
-  1. [Types](#types)
   1. [Objects](#objects)
   1. [Arrays](#arrays)
   1. [Strings](#strings)
@@ -36,40 +35,6 @@
   1. [Contributors](#contributors)
   1. [License](#license)
 
-## <a name='types'>Types</a>
-
-  - **Primitives**: When you access a primitive type you work directly on its value
-
-    + `string`
-    + `number`
-    + `boolean`
-    + `null`
-    + `undefined`
-
-    ```javascript
-    var foo = 1,
-        bar = foo;
-
-    bar = 9;
-
-    console.log(foo, bar); // => 1, 9
-    ```
-  - **Complex**: When you access a complex type you work on a reference to its value
-
-    + `object`
-    + `array`
-    + `function`
-
-    ```javascript
-    var foo = [1, 2],
-        bar = foo;
-
-    bar[0] = 9;
-
-    console.log(foo[0], bar[0]); // => 9, 9
-    ```
-
-    **[[⬆]](#TOC)**
 
 ## <a name='objects'>Objects</a>
 
@@ -273,6 +238,7 @@
     };
 
     // named function expression
+    // [adpilot] preferowany sposób definiowania funkcji
     var named = function named() {
       return true;
     };
@@ -310,7 +276,7 @@
       // ...stuff...
     }
 
-    // good
+    // better
     function yup(name, options, args) {
       // ...stuff...
     }
@@ -487,64 +453,11 @@
     // The interpreter is hoisting the variable
     // declaration to the top of the scope.
     // Which means our example could be rewritten as:
+    // [adpilot] Pożądany przez nas przykład
     function example() {
       var declaredButNotAssigned;
       console.log(declaredButNotAssigned); // => undefined
       declaredButNotAssigned = true;
-    }
-    ```
-
-  - Anonymous function expressions hoist their variable name, but not the function assignment.
-
-    ```javascript
-    function example() {
-      console.log(anonymous); // => undefined
-
-      anonymous(); // => TypeError anonymous is not a function
-
-      var anonymous = function() {
-        console.log('anonymous function expression');
-      };
-    }
-    ```
-
-  - Named function expressions hoist the variable name, not the function name or the function body.
-
-    ```javascript
-    function example() {
-      console.log(named); // => undefined
-
-      named(); // => TypeError named is not a function
-
-      superPower(); // => ReferenceError superPower is not defined
-
-      var named = function superPower() {
-        console.log('Flying');
-      };
-    }
-
-    // the same is true when the function name
-    // is the same as the variable name.
-    function example() {
-      console.log(named); // => undefined
-
-      named(); // => TypeError named is not a function
-
-      var named = function named() {
-        console.log('named');
-      }
-    }
-    ```
-
-  - Function declarations hoist their name and the function body.
-
-    ```javascript
-    function example() {
-      superPower(); // => Flying
-
-      function superPower() {
-        console.log('Flying');
-      }
     }
     ```
 
@@ -726,10 +639,10 @@
 
 ## <a name='whitespace'>Whitespace</a>
 
-  - Use soft tabs set to 2 spaces
+  - Use soft tabs set to 4 spaces
 
     ```javascript
-    // bad
+    // good
     function() {
     ∙∙∙∙var name;
     }
@@ -739,7 +652,7 @@
     ∙var name;
     }
 
-    // good
+    // bad
     function() {
     ∙∙var name;
     }
@@ -794,11 +707,8 @@
 
     // good
     $('#items')
-      .find('.selected')
-        .highlight()
-        .end()
-      .find('.open')
-        .updateCount();
+      .find('.selected').highlight().end()
+      .find('.open').updateCount();
 
     // bad
     var leds = stage.selectAll('.led').data(data).enter().append('svg:svg').class('led', true)
@@ -1081,219 +991,18 @@
     }
     ```
 
-  - Name your functions. This is helpful for stack traces.
+  - Name your functions like below.
 
     ```javascript
-    // bad
+    // good
     var log = function(msg) {
       console.log(msg);
     };
 
-    // good
+    // bad
     var log = function log(msg) {
       console.log(msg);
     };
-    ```
-
-    **[[⬆]](#TOC)**
-
-
-## <a name='accessors'>Accessors</a>
-
-  - Accessor functions for properties are not required
-  - If you do make accessor functions use getVal() and setVal('hello')
-
-    ```javascript
-    // bad
-    dragon.age();
-
-    // good
-    dragon.getAge();
-
-    // bad
-    dragon.age(25);
-
-    // good
-    dragon.setAge(25);
-    ```
-
-  - If the property is a boolean, use isVal() or hasVal()
-
-    ```javascript
-    // bad
-    if (!dragon.age()) {
-      return false;
-    }
-
-    // good
-    if (!dragon.hasAge()) {
-      return false;
-    }
-    ```
-
-  - It's okay to create get() and set() functions, but be consistent.
-
-    ```javascript
-    function Jedi(options) {
-      options || (options = {});
-      var lightsaber = options.lightsaber || 'blue';
-      this.set('lightsaber', lightsaber);
-    }
-
-    Jedi.prototype.set = function(key, val) {
-      this[key] = val;
-    };
-
-    Jedi.prototype.get = function(key) {
-      return this[key];
-    };
-    ```
-
-    **[[⬆]](#TOC)**
-
-
-## <a name='constructors'>Constructors</a>
-
-  - Assign methods to the prototype object, instead of overwriting the prototype with a new object. Overwriting the prototype makes inheritance impossible: by resetting the prototype you'll overwrite the base!
-
-    ```javascript
-    function Jedi() {
-      console.log('new jedi');
-    }
-
-    // bad
-    Jedi.prototype = {
-      fight: function fight() {
-        console.log('fighting');
-      },
-
-      block: function block() {
-        console.log('blocking');
-      }
-    };
-
-    // good
-    Jedi.prototype.fight = function fight() {
-      console.log('fighting');
-    };
-
-    Jedi.prototype.block = function block() {
-      console.log('blocking');
-    };
-    ```
-
-  - Methods can return `this` to help with method chaining.
-
-    ```javascript
-    // bad
-    Jedi.prototype.jump = function() {
-      this.jumping = true;
-      return true;
-    };
-
-    Jedi.prototype.setHeight = function(height) {
-      this.height = height;
-    };
-
-    var luke = new Jedi();
-    luke.jump(); // => true
-    luke.setHeight(20) // => undefined
-
-    // good
-    Jedi.prototype.jump = function() {
-      this.jumping = true;
-      return this;
-    };
-
-    Jedi.prototype.setHeight = function(height) {
-      this.height = height;
-      return this;
-    };
-
-    var luke = new Jedi();
-
-    luke.jump()
-      .setHeight(20);
-    ```
-
-
-  - It's okay to write a custom toString() method, just make sure it works successfully and causes no side effects.
-
-    ```javascript
-    function Jedi(options) {
-      options || (options = {});
-      this.name = options.name || 'no name';
-    }
-
-    Jedi.prototype.getName = function getName() {
-      return this.name;
-    };
-
-    Jedi.prototype.toString = function toString() {
-      return 'Jedi - ' + this.getName();
-    };
-    ```
-
-    **[[⬆]](#TOC)**
-
-
-## <a name='events'>Events</a>
-
-  - When attaching data payloads to events (whether DOM events or something more proprietary like Backbone events), pass a hash instead of a raw value. This allows a subsequent contributor to add more data to the event payload without finding and updating every handler for the event. For example, instead of:
-
-    ```js
-    // bad
-    $(this).trigger('listingUpdated', listing.id);
-
-    ...
-
-    $(this).on('listingUpdated', function(e, listingId) {
-      // do something with listingId
-    });
-    ```
-
-    prefer:
-
-    ```js
-    // good
-    $(this).trigger('listingUpdated', { listingId : listing.id });
-
-    ...
-
-    $(this).on('listingUpdated', function(e, data) {
-      // do something with data.listingId
-    });
-    ```
-
-  **[[⬆]](#TOC)**
-
-
-## <a name='modules'>Modules</a>
-
-  - The module should start with a `!`. This ensures that if a malformed module forgets to include a final semicolon there aren't errors in production when the scripts get concatenated. [Explanation](https://github.com/airbnb/javascript/issues/44#issuecomment-13063933)
-  - The file should be named with camelCase, live in a folder with the same name, and match the name of the single export.
-  - Add a method called noConflict() that sets the exported module to the previous version and returns this one.
-  - Always declare `'use strict';` at the top of the module.
-
-    ```javascript
-    // fancyInput/fancyInput.js
-
-    !function(global) {
-      'use strict';
-
-      var previousFancyInput = global.FancyInput;
-
-      function FancyInput(options) {
-        this.options = options || {};
-      }
-
-      FancyInput.noConflict = function noConflict() {
-        global.FancyInput = previousFancyInput;
-        return FancyInput;
-      };
-
-      global.FancyInput = FancyInput;
-    }(this);
     ```
 
     **[[⬆]](#TOC)**
