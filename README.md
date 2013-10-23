@@ -20,12 +20,7 @@
   1. [Semicolons](#semicolons)
   1. [Type Casting & Coercion](#type-coercion)
   1. [Naming Conventions](#naming-conventions)
-  1. [Accessors](#accessors)
-  1. [Constructors](#constructors)
-  1. [Events](#events)
-  1. [Modules](#modules)
   1. [jQuery](#jquery)
-  1. [ES5 Compatibility](#es5)
   1. [Testing](#testing)
   1. [Performance](#performance)
   1. [Resources](#resources)
@@ -1072,25 +1067,6 @@
 
     **[[⬆]](#TOC)**
 
-
-## <a name='es5'>ECMAScript 5 Compatibility</a>
-
-  - Refer to [Kangax](https://twitter.com/kangax/)'s ES5 [compatibility table](http://kangax.github.com/es5-compat-table/)
-
-  **[[⬆]](#TOC)**
-
-
-## <a name='testing'>Testing</a>
-
-  - **Yup.**
-
-    ```javascript
-    function() {
-      return true;
-    }
-    ```
-
-    **[[⬆]](#TOC)**
 
 
 ## <a name='performance'>Performance</a>
